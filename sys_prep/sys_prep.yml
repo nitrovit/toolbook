@@ -1,0 +1,34 @@
+---
+# System Preparation Tasks
+- name: Check if 'ligolo' tun interface exists
+  command: "ip link show ligolo"
+  register: ligolo_exists
+  ignore_errors: yes
+  changed_when: false
+
+- name: Create 'ligolo' tun interface if not exists
+  command: "ip tuntap add dev ligolo mode tun"
+  when: ligolo_exists.rc != 0
+  ignore_errors: yes
+  changed_when: false
+
+- name: Bring 'ligolo' tun interface up
+  command: "ip link set ligolo up"
+  ignore_errors: yes
+  changed_when: false
+
+- name: Update sqlmap
+  command: "sqlmap --update"
+  changed_when: false
+
+- name: Check if 'nxc' or 'netexec' is installed
+  command: "dpkg -l | grep -E 'nxc|netexec'"
+  register: nxc_installed
+  failed_when: nxc_installed.rc not in [0, 1]
+  changed_when: false
+
+- name: Install netexec if not installed
+  apt:
+    name: netexec
+    state: present
+  when: nxc_installed.rc != 0

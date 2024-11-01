@@ -1,0 +1,53 @@
+opt_tools:
+  - category: "Enumeration"
+    repos:
+      - name: airgeddon
+        url: https://github.com/v1s1t0r1sh3r3/airgeddon.git
+      - name: seclists
+        url: https://github.com/danielmiessler/SecLists.git
+
+  - category: "Privilege Escalation"
+    repos:
+      - name: PEAS
+        url: https://github.com/peass-ng/PEASS-ng.git
+      - name: LaZagne
+        url: https://github.com/AlessandroZ/LaZagne.git
+      - name: GodPotato
+        url: https://github.com/BeichenDream/GodPotato.git
+
+  - category: "Windows Tools"
+    repos:
+      - name: BloodHound
+        url: https://github.com/BloodHoundAD/BloodHound.git
+      - name: Sharpocollection
+        url: https://github.com/Flangvik/SharpCollection.git
+      - name: PowerSploit
+        url: https://github.com/PowerShellMafia/PowerSploit.git
+      - name: Responder
+        url: https://github.com/lgandx/Responder.git
+      - name: Impacket
+        url: https://github.com/SecureAuthCorp/impacket.git
+      - name: Ghostpack-CompiledBinaries
+        url: https://github.com/r3motecontrol/Ghostpack-CompiledBinaries.git
+
+  - category: "Tunneling and Pivoting"
+    repos:
+      - name: Ligolo-ng
+        url: https://github.com/nicocha30/ligolo-ng.git
+      - name: Chisel
+        url: https://github.com/jpillora/chisel.git
+
+  - category: "General Tools"
+    repos:
+      - name: OSCP
+        url: https://github.com/0xsyr0/oscp.git
+      - name: ObfuscatedSharpCollection
+        url: https://github.com/Flangvik/ObfuscatedSharpCollection.git
+      - name: Penelope
+        url: https://github.com/brightio/penelope.git
+      - name: Obsidian
+        url: https://github.com/obsidianmd/obsidian-releases.git
+
+
+
+

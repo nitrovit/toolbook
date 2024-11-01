@@ -1,0 +1,67 @@
+---
+- name: Manage and update tools
+  hosts: localhost
+  gather_facts: no
+  vars_files:
+    - opt_tools/opt_tools.yml  # Load the repository list from variables
+
+  tasks:
+    - name: Ensure /opt directory exists
+      file:
+        path: /opt
+        state: directory
+
+    # Clone or update repositories from opt_tools using git module
+    - name: Clone or update repository using git module
+      git:
+        repo: "{{ item.url }}"
+        dest: "/opt/{{ item.name }}"
+        update: yes
+      loop: "{{ opt_tools | selectattr('repos', 'defined') | map(attribute='repos') | list | flatten }}"
+      loop_control:
+        loop_var: item
+      register: git_result
+
+    # Include sys_prep setup (assuming sys_prep.yml contains valid Ansible tasks)
+    - include_tasks: sys_prep/sys_prep.yml
+
+    # winTools binaries setup
+    - name: Ensure /opt/winTools directory exists
+      file:
+        path: /opt/winTools
+        state: directory
+      register: wintools_dir_result
+
+    - name: Ensure /opt/winTools directory creation was successful
+      fail:
+        msg: "/opt/winTools directory does not exist. Failed to create directory."
+      when: wintools_dir_result is failed
+
+    # Copy binaries from netcat_win to winTools
+    - name: Copy nc64.exe from netcat_win to winTools
+      copy:
+        src: "netcat_win/nc64.exe"
+        dest: "/opt/winTools/nc64.exe"
+        mode: '0755'
+
+    - name: Copy nc32.exe from netcat_win to winTools
+      copy:
+        src: "netcat_win/nc32.exe"
+        dest: "/opt/winTools/nc32.exe"
+        mode: '0755'
+
+    # Copy Rubeus and SafetyKatz binaries from Ghostpack to winTools
+    - name: Copy Rubeus to winTools
+      copy:
+        src: "/opt/Ghostpack-CompiledBinaries/Rubeus.exe"
+        dest: "/opt/winTools/Rubeus.exe"
+        mode: '0755'
+      when: ansible_facts.get('os_family') == 'Windows'
+
+    - name: Copy SafetyKatz to winTools
+      copy:
+        src: "/opt/Ghostpack-CompiledBinaries/SafetyKatz.exe"
+        dest: "/opt/winTools/SafetyKatz.exe"
+        mode: '0755'
+      when: ansible_facts.get('os_family') == 'Windows'
+
